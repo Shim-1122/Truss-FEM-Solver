@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     out = Path(args.out or f"figures/{Path(args.file).stem}.png")
     out.parent.mkdir(parents=True, exist_ok=True)
-    name = json.loads(Path(args.file).read_text()).get("name", Path(args.file).stem)
+    name = json.loads(Path(args.file).read_text(encoding="utf-8")).get("name", Path(args.file).stem)
     ax = plot_truss(truss, result, args.scale, title=name)
     ax.figure.tight_layout()
     ax.figure.savefig(out, dpi=150)

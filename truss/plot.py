@@ -1,4 +1,6 @@
 """Draw a truss: undeformed shape, exaggerated deformed shape, members colored by axial force."""
+from __future__ import annotations
+
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.collections import LineCollection

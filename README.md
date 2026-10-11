@@ -48,16 +48,74 @@ where u_e = [u_i, v_i, u_j, v_j] are the member end displacements.
 
 The degree of static indeterminacy (m + r − 2j) is reported with each solution.
 
-## Usage
+## Getting Started (Mac or Windows, No Experience Needed)
+
+You do not need to know Python. Each step says exactly what to click or type; copying and pasting is fine.
+
+**1. Install Python (once per computer)**
+
+- **Mac:** open Terminal (press Cmd+Space, type `Terminal`, press Return). Type `python3 --version` and press Return.
+  - If it shows Python 3.9 or newer, go to step 2.
+  - If a box offers to install the "command line developer tools", click **Install**, wait for it to finish, and check again.
+  - Otherwise download the macOS installer from https://www.python.org/downloads/, open it, and click through.
+- **Windows:** download the installer from https://www.python.org/downloads/ and open it. On the first screen tick **Add python.exe to PATH**, then click **Install Now**.
+
+**2. Download this project**
+
+Click the green **Code** button at the top of this page, then **Download ZIP**. Unzip it: on a Mac double-click the ZIP in Downloads; on Windows right-click it, choose **Extract All**, then **Extract**. You now have a folder named `Truss-FEM-Solver-main`.
+
+**3. Start it**
+
+- **Windows:** open the `Truss-FEM-Solver-main` folder and double-click **start.bat**.
+- **Mac:** in Terminal type `cd ` (with a space after it), drag the `Truss-FEM-Solver-main` folder from Finder into the Terminal window, and press Return. Then type `python3 start.py` and press Return.
+
+The first time, it sets itself up: it creates a private Python environment inside the project folder and downloads the libraries it needs. This takes a few minutes and needs internet. Then a menu appears. Type a number and press Enter:
+
+| Option | What it does | What you get |
+| --- | --- | --- |
+| 1 | Solve the example Pratt bridge | Prints every member force, the reactions and the largest deflection, saves `figures/pratt_bridge.png` and opens it |
+| 2 | Solve the example X-braced cantilever | Same for the statically indeterminate cantilever |
+| 3 | Solve your own truss file | Asks for the path to a `.json` file written as described in Input Format below (drag the file into the window to paste its path) |
+| 4 | Run the automated tests | Checks the solver against hand-calculated solutions |
+
+To use it again later, repeat step 3; setup is skipped and the menu appears in a few seconds. Type `q` and press Enter to quit.
+
+**Troubleshooting**
+
+| Problem | Fix |
+| --- | --- |
+| Mac: `command not found: python3` | Install Python (step 1). |
+| Windows: `Python was not found`, or the Microsoft Store opens | Install Python from python.org (step 1) and tick **Add python.exe to PATH**. If you already installed it without that box, run the installer again, choose **Modify**, then **Next**, and tick **Add Python to environment variables**. |
+| Windows: "Windows protected your PC" when opening start.bat | Click **More info**, then **Run anyway**. The file only runs `py start.py`; you can open it in Notepad to check. |
+| `This project needs Python 3.9 or newer` | Install the current Python from https://www.python.org/downloads/ |
+| `FileNotFoundError` for your own truss | Check the path. Dragging the file into the window types the full path for you. |
+| `Installing libraries failed` or setup stops with an error | Check your internet connection, delete the `.venv` folder inside the project folder, and start again. (On a Mac the folder is hidden: press Cmd+Shift+. in Finder to show it.) |
+| A figure did not open by itself | Look in the project's `figures` folder. |
+
+**For developers.** `start.py` only creates `.venv`, installs `requirements.txt` and runs the commands below, so you can also work by hand (Python 3.9 or newer):
 
 ```bash
-git clone https://github.com/Shim-1122/Truss-FEM-Solver.git
-cd Truss-FEM-Solver
-python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
+# macOS / Linux
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-python solve.py examples/pratt_bridge.json
-pytest
 ```
+
+```powershell
+# Windows (PowerShell or Command Prompt)
+py -m venv .venv
+.venv\Scripts\activate       # if PowerShell blocks this: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+pip install -r requirements.txt
+```
+
+```bash
+python solve.py examples/pratt_bridge.json
+python -m pytest
+```
+
+`python start.py <shortcut>` runs one menu option directly (`python start.py --list` shows the shortcuts). CI runs the tests through `start.py` on macOS, Windows and Linux with Python 3.9 and 3.13.
+
+### Command Line
 
 Output (abridged):
 
@@ -93,6 +151,7 @@ SI units (m, N, Pa). `E` and `A` accept one value or one value per member. Suppo
 ## Project Structure
 
 ```
+start.py                    Beginner launcher: sets up .venv, shows the menu (start.bat on Windows)
 truss/
   model.py     truss definition, JSON loading, indeterminacy
   solver.py    stiffness assembly, solve, force recovery

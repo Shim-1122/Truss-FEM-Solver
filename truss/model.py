@@ -1,4 +1,6 @@
 """Truss definition: geometry, material, supports, and loads."""
+from __future__ import annotations
+
 import json
 from dataclasses import dataclass
 from pathlib import Path
@@ -44,7 +46,7 @@ class Truss:
 
     @classmethod
     def from_json(cls, path) -> "Truss":
-        spec = json.loads(Path(path).read_text())
+        spec = json.loads(Path(path).read_text(encoding="utf-8"))
         return cls.build(spec["nodes"], spec["elements"], spec["E"], spec["A"],
                          spec["supports"], spec.get("loads"))
 
