@@ -1,0 +1,9 @@
+[project]
+name = "truss-fem-solver"
+version = "1.0.0"
+description = "2D truss finite element solver (direct stiffness method), validated against analytical solutions"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
